@@ -74,6 +74,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 body {
@@ -82,6 +83,8 @@ body {
   color: var(--text);
   line-height: 1.5;
   min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
   transition: background var(--transition), color var(--transition);
 }
 
@@ -262,15 +265,18 @@ input[type="text"],
 textarea,
 select {
   width: 100%;
+  max-width: 100%;
   padding: 0.75rem 1rem;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   font-family: var(--font);
-  font-size: 0.9rem;
+  font-size: 1rem;
   background: var(--bg-input);
   color: var(--text);
   transition: border-color var(--transition), box-shadow var(--transition);
   outline: none;
+  box-sizing: border-box;
+  -webkit-appearance: none;
 }
 input[type="text"]:focus,
 textarea:focus {
@@ -917,6 +923,8 @@ body.dark .qr-placeholder {
   max-width: 640px;
   margin: 0 auto;
   padding: 1rem;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 /* Submit section */
@@ -933,7 +941,8 @@ body.dark .qr-placeholder {
 }
 .textarea-wrap {
   position: relative;
-  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 .textarea-wrap textarea {
   padding-bottom: 1.5rem;
@@ -1089,6 +1098,9 @@ body.dark .qr-placeholder {
   }
 }
 @media (max-width: 640px) {
+  .landing-body {
+    padding: 0.75rem;
+  }
   .landing-cards {
     grid-template-columns: 1fr;
   }
@@ -1099,12 +1111,37 @@ body.dark .qr-placeholder {
     font-size: 0.9rem;
   }
   .landing-card {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
   .question-actions {
     flex-wrap: wrap;
   }
-  .submit-section form .btn {
-    width: 100%;
+  .participant-header {
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+  .participant-main {
+    padding: 0.75rem;
+  }
+  .participant-session-title {
+    font-size: 0.85rem;
+  }
+  .question-card {
+    padding: 0.85rem;
+  }
+  .question-card-top {
+    gap: 0.5rem;
+  }
+  .vote-btn {
+    min-width: 44px;
+    padding: 0.35rem;
+  }
+  .modal-card {
+    padding: 1.25rem;
+    margin: 0.5rem;
+  }
+  .btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
   }
 }
