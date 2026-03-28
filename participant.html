@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join Q&A — LiveQ&A</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="participant-body">
+
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Joining session&hellip;</p>
+  </div>
+
+  <!-- Name entry overlay -->
+  <div class="modal-overlay" id="nameModal" style="display:none;">
+    <div class="modal-card modal-sm modal-centered">
+      <div class="modal-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6C5CE7" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h3>Welcome!</h3>
+      <p class="modal-sub" id="nameModalSession"></p>
+      <input type="text" id="participantName" placeholder="Your name (optional)" maxlength="40" />
+      <button class="btn btn-primary btn-full" id="joinBtn">Join Session</button>
+      <p class="anonymous-note">Leave blank to join anonymously</p>
+    </div>
+  </div>
+
+  <!-- Session closed overlay -->
+  <div class="modal-overlay" id="closedOverlay" style="display:none;">
+    <div class="modal-card modal-sm modal-centered">
+      <div class="modal-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <h3>Session Ended</h3>
+      <p>This Q&A session is no longer active.</p>
+      <a href="index.html" class="btn btn-secondary btn-full" style="margin-top:1rem;">Back to Home</a>
+    </div>
+  </div>
+
+  <header class="participant-header">
+    <a href="index.html" class="logo logo-sm">
+      <svg width="24" height="24" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="#6C5CE7"/><path d="M10 13h16M10 18h12M10 23h8" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><circle cx="27" cy="23" r="3" fill="#00E676"/></svg>
+      <span>LiveQ&A</span>
+    </a>
+    <h1 class="participant-session-title" id="sessionTitle">Loading…</h1>
+    <button class="btn-icon" id="darkModeToggle" title="Toggle dark mode">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+    </button>
+  </header>
+
+  <main class="participant-main">
+    <!-- Submit question form -->
+    <section class="submit-section" id="submitSection">
+      <form id="questionForm" autocomplete="off">
+        <div class="textarea-wrap">
+          <textarea id="questionInput" placeholder="Ask a question…" rows="2" maxlength="500"></textarea>
+          <span class="char-count"><span id="charCount">0</span>/500</span>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Submit
+        </button>
+      </form>
+      <p class="not-accepting" id="notAccepting" style="display:none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        The host has paused new questions.
+      </p>
+    </section>
+
+    <!-- Sort / filter -->
+    <div class="participant-toolbar">
+      <span class="question-count-label"><span id="questionCount">0</span> questions</span>
+      <select id="sortSelect" class="sort-select sort-select-sm">
+        <option value="top">Top Voted</option>
+        <option value="newest">Newest</option>
+      </select>
+    </div>
+
+    <!-- Questions -->
+    <div id="questionList" class="question-list participant-questions">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Empty state -->
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <p>No questions yet — be the first!</p>
+    </div>
+  </main>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/participant.js"></script>
+</body>
+</html>
