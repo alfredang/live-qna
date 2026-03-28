@@ -27,13 +27,22 @@ const auth = firebase.auth();
 
 // Sign in anonymously — every visitor gets a stable UID
 // used to track votes and prevent duplicates.
-async function ensureAnonymousAuth() {
-  if (auth.currentUser) return auth.currentUser;
-  try {
-    const cred = await auth.signInAnonymously();
-    return cred.user;
-  } catch (err) {
-    console.error("Anonymous auth failed:", err);
-    return null;
-  }
+// Uses onAuthStateChanged for faster resolution when already signed in.
+function ensureAnonymousAuth() {
+  return new Promise((resolve) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      unsubscribe();
+      if (user) {
+        resolve(user);
+      } else {
+        try {
+          const cred = await auth.signInAnonymously();
+          resolve(cred.user);
+        } catch (err) {
+          console.error("Anonymous auth failed:", err);
+          resolve(null);
+        }
+      }
+    });
+  });
 }
