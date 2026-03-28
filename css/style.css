@@ -1122,6 +1122,8 @@ body.dark .qr-placeholder {
   }
   .participant-main {
     padding: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   .participant-session-title {
     font-size: 0.85rem;

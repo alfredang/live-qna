@@ -97,6 +97,7 @@
 
   function startSession() {
     hideLoading();
+    window.scrollTo(0, 0);
     setupRealtimeListeners();
     setupEventHandlers();
     loadMyVotes();
