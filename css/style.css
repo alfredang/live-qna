@@ -930,21 +930,29 @@ body.dark .qr-placeholder {
 /* Submit section */
 .submit-section {
   margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 .submit-section form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 .submit-section form .btn {
   width: 100%;
+  box-sizing: border-box;
 }
 .textarea-wrap {
   position: relative;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
 }
 .textarea-wrap textarea {
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
   padding-bottom: 1.5rem;
 }
 .char-count {
@@ -970,6 +978,8 @@ body.dark .qr-placeholder {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 .question-count-label {
   font-size: 0.8rem;
