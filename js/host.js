@@ -25,17 +25,24 @@
   document.addEventListener("DOMContentLoaded", async () => {
     initDarkMode();
 
-    currentUser = await ensureAnonymousAuth();
-    if (!currentUser) {
+    // Load session data and auth in parallel for speed
+    const [snap, user] = await Promise.all([
+      sessionRef.get().catch((err) => {
+        console.error("Load session error:", err);
+        return null;
+      }),
+      ensureAnonymousAuth(),
+    ]);
+
+    if (!user) {
       showToast("Authentication failed", "error");
       hideLoading();
       return;
     }
+    currentUser = user;
 
-    // Load session data
     try {
-      const snap = await sessionRef.get();
-      if (!snap.exists) {
+      if (!snap || !snap.exists) {
         showToast("Session not found", "error");
         hideLoading();
         return;

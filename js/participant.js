@@ -24,48 +24,49 @@
   document.addEventListener("DOMContentLoaded", async () => {
     initDarkMode();
 
-    currentUser = await ensureAnonymousAuth();
-    if (!currentUser) {
+    // Load session data and auth in parallel for speed
+    const [sessionSnap, user] = await Promise.all([
+      sessionRef.get().catch((err) => {
+        console.error("Load session error:", err);
+        return null;
+      }),
+      ensureAnonymousAuth(),
+    ]);
+
+    if (!user) {
       showToast("Authentication failed", "error");
       hideLoading();
       return;
     }
+    currentUser = user;
 
-    // Load session
-    try {
-      const snap = await sessionRef.get();
-      if (!snap.exists) {
-        showToast("Session not found", "error");
-        hideLoading();
-        return;
-      }
-      sessionData = snap.data();
-
-      if (!sessionData.isActive) {
-        hideLoading();
-        document.getElementById("closedOverlay").style.display = "flex";
-        return;
-      }
-
-      document.getElementById("sessionTitle").textContent = sessionData.title;
-      document.getElementById("nameModalSession").textContent = sessionData.title;
-      document.title = `${sessionData.title} — LiveQ&A`;
-
-      // Check if already joined (stored in sessionStorage for this tab)
-      const savedName = sessionStorage.getItem(`liveqa-name-${sessionId}`);
-      if (savedName !== null) {
-        participantName = savedName || "Anonymous";
-        joined = true;
-        startSession();
-      } else {
-        hideLoading();
-        document.getElementById("nameModal").style.display = "flex";
-        document.getElementById("participantName").focus();
-      }
-    } catch (err) {
-      console.error("Load session error:", err);
-      showToast("Failed to load session", "error");
+    if (!sessionSnap || !sessionSnap.exists) {
+      showToast("Session not found", "error");
       hideLoading();
+      return;
+    }
+    sessionData = sessionSnap.data();
+
+    if (!sessionData.isActive) {
+      hideLoading();
+      document.getElementById("closedOverlay").style.display = "flex";
+      return;
+    }
+
+    document.getElementById("sessionTitle").textContent = sessionData.title;
+    document.getElementById("nameModalSession").textContent = sessionData.title;
+    document.title = `${sessionData.title} — LiveQ&A`;
+
+    // Check if already joined (stored in sessionStorage for this tab)
+    const savedName = sessionStorage.getItem(`liveqa-name-${sessionId}`);
+    if (savedName !== null) {
+      participantName = savedName || "Anonymous";
+      joined = true;
+      startSession();
+    } else {
+      hideLoading();
+      document.getElementById("nameModal").style.display = "flex";
+      document.getElementById("participantName").focus();
     }
   });
 
