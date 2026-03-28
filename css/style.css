@@ -925,8 +925,11 @@ body.dark .qr-placeholder {
 }
 .submit-section form {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
-  align-items: flex-start;
+}
+.submit-section form .btn {
+  width: 100%;
 }
 .textarea-wrap {
   position: relative;
@@ -1100,9 +1103,6 @@ body.dark .qr-placeholder {
   }
   .question-actions {
     flex-wrap: wrap;
-  }
-  .submit-section form {
-    flex-direction: column;
   }
   .submit-section form .btn {
     width: 100%;
